@@ -3,61 +3,45 @@ window.addEventListener('DOMContentLoaded', () => {
     const addTaskBtn = document.getElementById('addTaskBtn');
     const taskList = document.getElementById('taskList');
   
-    loadTasks();
+    // Update task count display
+    function updateTaskCount() {
+      const count = document.querySelectorAll('.task-item').length;
+      document.getElementById('taskCount').textContent = `Tasks remaining: ${count}`;
+    }
   
-
     addTaskBtn.addEventListener('click', () => {
       const taskText = taskInput.value.trim();
+  
       if (taskText !== '') {
-        addTaskToDOM(taskText);
-        saveTasks();
+        const li = document.createElement('li');
+        li.className = 'task-item';
+        li.textContent = taskText;
+  
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '❌';
+        delBtn.addEventListener('click', () => {
+          li.remove();
+          updateTaskCount(); 
+        });
+  
+        li.appendChild(delBtn);
+        taskList.appendChild(li);
+  
         taskInput.value = '';
+  
+
+        updateTaskCount();
       }
     });
+  
 
-
-    taskInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-        const taskText = taskInput.value.trim();
-        if (taskText !== '') {
-            addTaskToDOM(taskText);
-            saveTasks();
-            taskInput.value = '';
-        }
-        }
+    taskInput.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        addTaskBtn.click();
+      }
     });
   
 
-    function addTaskToDOM(taskText) {
-      const li = document.createElement('li');
-      li.className = 'task-item';
-      li.textContent = taskText;
-  
-      const delBtn = document.createElement('button');
-      delBtn.textContent = '❌';
-      delBtn.addEventListener('click', () => {
-        li.remove();
-        saveTasks();
-      });
-  
-      li.appendChild(delBtn);
-      taskList.appendChild(li);
-    }
-  
-
-    function saveTasks() {
-      const tasks = [];
-      document.querySelectorAll('.task-item').forEach(item => {
-        tasks.push(item.firstChild.textContent.trim());
-      });
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-  
-    function loadTasks() {
-      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-      tasks.forEach(taskText => {
-        addTaskToDOM(taskText);
-      });
-    }
+    updateTaskCount();
   });
   

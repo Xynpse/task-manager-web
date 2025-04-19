@@ -8,6 +8,27 @@ h1{
     color: #000000;
 }
 
+.title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-top: 1rem;
+    color: #333;
+  }
+  
+  .tagline {
+    text-align: center;
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 2rem;
+  }
+
+  .task-count {
+    text-align: center;
+    font-size: 1rem;
+    color: #444;
+    margin-top: 1rem;
+  }
+
 input[type="text"]{
     padding: 10px;
     width: 250px;
